@@ -19,9 +19,27 @@ body {
   overflow: hidden;
 }
 
+header {
+  position: relative;
+  height: 100vh;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
 #c {
+  position: absolute;
   height: 100%;
   width: 100%;
+  z-index: -1;
 }
 
 @media (prefers-color-scheme: light) {

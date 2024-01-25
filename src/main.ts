@@ -53,6 +53,7 @@ function main() {
     void main() {
         vec3 pos = position;
         pos.y += sin(time + pos.x) * 0.25;
+        pos.y += sin(time * 0.5 + pos.z) * 0.15;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
         gl_PointSize = 3.0;
 
@@ -67,14 +68,21 @@ function main() {
     varying float vZ;
 
     void main() {
-        // Normalize the x and z values based on grid size
-        float normalizedValue = (vX / (gridSize * spacing) + vZ / (gridSize * spacing)) / 2.0;
+        // Calculate the range of x and z
+        float maxX = gridSize * spacing / 2.0;
+        float maxZ = gridSize * spacing / 2.0;
+
+        // Normalize the x and z values based on their maximum values
+        float normalizedX = (vX + maxX) / (2.0 * maxX);
+        float normalizedZ = (vZ + maxZ) / (2.0 * maxZ);
+
+        // Create the diagonal gradient based on normalized x and z
+        float normalizedValue = (normalizedX + normalizedZ) / 2.0;
         normalizedValue = clamp(normalizedValue, 0.0, 1.0);
 
         vec3 blue = vec3(0.0, 0.0, 1.0);
         vec3 green = vec3(0.0, 1.0, 0.0);
 
-        // Create the diagonal gradient
         vec3 color = mix(blue, green, normalizedValue);
         gl_FragColor = vec4(color, 1.0);
     }
@@ -87,7 +95,7 @@ function main() {
 
   const xRotationDeg = -55;
   camera.rotateX((xRotationDeg * Math.PI) / 180);
-  camera.position.y = 10;
+  camera.position.y = 3;
   camera.position.z = -2;
 
   function animate() {
